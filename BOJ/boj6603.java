@@ -1,57 +1,56 @@
 import java.util.Scanner;
+import java.util.Stack;
 
 public class boj6603 {
-	
-	static boolean[] flag;
+
+	static int[] printarray;
+	static Stack<Integer> st;
+	static int[] number;
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+		st = new Stack<Integer>();
 		Scanner sc = new Scanner(System.in);
 		int k = sc.nextInt();   // 6 < k < 13	
+		
 		while(k!=0) {
-			int[] number = new int[k];       //숫자 배열 새로 생성
-			boolean[] flag = new boolean[k];  //플래그 배열 새로 생성
+			number = new int[k];
 			for(int i=0; i<k; i++) {   //숫자 입력
 				number[i] = sc.nextInt();
 			}
-			Combination(k, 6, number, flag);
+			combination(k, 6, 0);
 			System.out.println();
 			k = sc.nextInt();
 		}
-		
+
 	}
 
-	public static String Combination(int n, int r, int[] array, boolean[] flag) {
-		if(n == r) {
-			for(int i=0; i<n; i++) {
-				flag[i] = true;
-			}
-			for(int i=0; i<n; i++) {
-				if(flag[i] == true) System.out.print(array[i]+" ");
-			}
-			for(int i=0; i<n; i++) {
-				flag[i] = false;
-			}
-			System.out.println();
-			return "";
+	public static void combination(int n, int r, int index) {
+		if(r == 0) {
+			showStack();
 		}
 		
-		if(r==1) {
-			for(int i=0; i<n; i++) {
-				flag[i] = true;
-				for(int j=0; j<n; j++) {
-					if(flag[j] == true) System.out.print(array[j]+" ");
-				}
-				flag[i] = false;
-				System.out.println();
-			}
-			return "";
+		else if (n == r) {
+			for(int i=0; i<n; i++) st.add(number[index+i]);
+			showStack();
+			for(int i=0; i<n;i++) st.pop();
 		}
-		flag[n-1] = true;
-		Combination(n-1, r-1, array, flag);
-		flag[n-1] = false;
-		Combination(n-1, r, array, flag);
-		return "";
+		
+		else {
+			st.add(number[index]);
+			combination(n-1, r-1, index+1);
+			st.pop();
+			combination(n-1, r, index+1);
+		}
+	}
+
+	public static void showStack(){
+		//스택에 있는 값들을 출력한다.
+		for(int i=0; i<st.size(); i++){
+			System.out.print(st.get(i)+" ");
+		}
+		System.out.println("");
 	}
 
 }
