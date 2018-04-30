@@ -1,9 +1,9 @@
-package jagu6_2018;
+package jagu7_2018;
 
 public interface Queue {
-
-	public void add(int x);
-	public int first();
-	public int remove();
+	public void add(Object object);
+	public Object first();
+	public Object remove();
 	public int size();
+	public boolean empty();
 }
