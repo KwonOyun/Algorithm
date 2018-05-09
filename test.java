@@ -26,9 +26,7 @@ public class test {
 		}
 		
 		DFS(V);
-		
-		for(int i=1; i<=N; i++) visited[i] = false;
-		System.out.println();
+		Reset();
 		BFS(V);
 	}
 	public static void DFS(int v) {
@@ -56,6 +54,11 @@ public class test {
 				}
 			}
 		}
+	}
+	
+	public static void Reset() {
+		for(int i=1; i<=N; i++) visited[i] = false;
+		System.out.println();
 	}
 
 }
