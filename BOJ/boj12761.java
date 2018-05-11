@@ -18,9 +18,18 @@ public class boj12761 {
 		
 	}
 	public static void BFS() {
-		int dongkyu = A;
+		int dongkyu = N;
 		Queue<Integer> all = new LinkedList<Integer>();
+		if(dongkyu+1>=0) all.add(dongkyu+1);
+		if(dongkyu-1>=0) all.add(dongkyu-1);
+		if(dongkyu+A>=0) all.add(dongkyu+A);
+		if(dongkyu-A>=0) all.add(dongkyu-A);
+		if(dongkyu+B>=0) all.add(dongkyu+B);
+		if(dongkyu-B>=0) all.add(dongkyu-B);
+		if(dongkyu*A>=0) all.add(dongkyu*A);
+		if(dongkyu*B>=0) all.add(dongkyu*B);
 		
 	}
+	
 
 }
