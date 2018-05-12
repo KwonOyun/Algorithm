@@ -34,10 +34,9 @@ public class boj1697 {
 				int next=0;
 				int[] nextcase = {+1, -1, present*2};
 				for(int i=0; i<3; i++) {
-					
 					if(i<2) next = present+nextcase[i];
 					else next = nextcase[i];
-					if(next>0 || next<100000) continue;
+					if(next<0 || next>100000) continue;
 					if(visited[next]) continue;
 					
 					visited[next] = true;
