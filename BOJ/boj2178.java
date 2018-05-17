@@ -17,12 +17,11 @@ public class boj2178 {
 		M = sc.nextInt();
 		matrix = new int[10001];
 		visited = new boolean[10001];
-		
+		int index=1;
 		for(int i=1; i<=N; i++) {
-			int temp = sc.nextInt();
-			for(int j=6*i; j>=1+6*(i-1); j--) {
-				matrix[j] = temp%10;
-				temp = temp/10;
+			String temp = sc.next();
+			for(int j=0; j<M; j++) {
+				matrix[index++] = Integer.parseInt(temp.charAt(j)+"");
 			}
 		}
 		BFS();
