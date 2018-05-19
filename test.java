@@ -4,61 +4,50 @@ import java.util.Scanner;
 
 public class test {
 	
-	public static int N;
-	public static int M;
-	public static int V;
-	public static int[][] matrix;
+	public static int A, B, N, M;
 	public static boolean[] visited;
 	
 	public static void main(String[] args) {
+		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
+		A = sc.nextInt();
+		B = sc.nextInt();
+		N =sc.nextInt();  //동규위치
+		M = sc.nextInt();   //주미 위치
+		visited = new boolean[100001];
 		
-		N = sc.nextInt();
-		M = sc.nextInt();
-		V = sc.nextInt();
-		matrix = new int[N+1][N+1];
-		visited = new boolean[N+1];
-		
-		for(int i=1; i<=M; i++) {
-			int a = sc.nextInt();
-			int b = sc.nextInt();
-			matrix[a][b] = matrix[b][a] = 1;
-		}
-		
-		DFS(V);
-		Reset();
-		BFS(V);
-	}
-	public static void DFS(int v) {
-		visited[v] = true;
-		System.out.print(v+" ");
-		for(int i=1; i<=N; i++) {
-			if(matrix[v][i] == 1 && visited[i] == false) {
-				visited[i] = true;
-				DFS(i);
-			}
-		}
+		BFS(N);
 	}
 	
-	public static void BFS(int v) {
+	public static void BFS(int start) {
 		Queue<Integer> queue = new LinkedList<Integer>();
-		queue.add(v);
-		visited[v] = true;
+		queue.add(start);
+		int ans =0;
 		while(!queue.isEmpty()) {
-			int out = queue.poll();
-			System.out.print(out+" ");
-			for(int i=1; i<=N; i++) {
-				if(matrix[out][i] == 1 && visited[i] == false) {
-					visited[i] =true;
-					queue.add(i);
+			int size = queue.size();
+			while(0<size--) {
+				int present = queue.poll();
+				if(present == M) {
+					System.out.println(ans);
+					break;
+				}
+				visited[present] = true;
+				int next =0;
+				int[] nextcase = {+1, -1, +A, -A, +B, -B, A, B};
+				
+				for(int i=0; i<8; i++) {
+					if(i<6) next = present + nextcase[i];
+					else next = present * nextcase[i];
+					
+					if(next<0 || next > 100000) continue;
+					if(visited[next] == true) continue;
+					
+					visited[next] = true;
+					queue.add(next);
 				}
 			}
+			ans++;
 		}
-	}
-	
-	public static void Reset() {
-		for(int i=1; i<=N; i++) visited[i] = false;
-		System.out.println();
 	}
 
 }
