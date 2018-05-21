@@ -20,13 +20,13 @@ public class boj1764 {
 			String temp = sc.next();
 			A.add(temp);
 		}
-		Collections.sort(A);
-		String[] ary = new String[A.size()];
-		ary = A.toArray(ary);
+		Collections.sort(A);  //collection을 통해 Object타입 정렬
+		String[] ary = new String[A.size()];  //Arrays메소드를 사용하기 위해 새로운 배열 생성
+		ary = A.toArray(ary);  //A객체리스트를 toArray메소드를 통해 배열로 변환
 		
 		for(int i=0; i<M; i++) {
 			String temp = sc.next();
-			int index = Arrays.binarySearch(ary, temp);
+			int index = Arrays.binarySearch(ary, temp);  //Arrays.binarySearch메소드를 통해 ary배열에서 temp를 찾기 위해 이진탐색
 			if(index>=0) result.add(temp);
 		}
 		System.out.println(result.size());
