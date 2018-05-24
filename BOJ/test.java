@@ -49,8 +49,8 @@ public class test {
 			System.out.print(out+" ");
 			for(int i=1; i<=N; i++) {
 				if(matrix[out][i] == 1 && visited[i] == false) {
-					queue.add(i);
 					visited[i] = true;
+					queue.add(i);
 				}
 			}
 		}
