@@ -29,50 +29,84 @@ public class BST {
 
 	}
 	public int treesize() {
-
-		return size;
+		if(this.key==null) return 0;
+		size=0;
+		DFS();
+		return size+1;
 	}
+	
+	public String DFS() {
+		if(this.left!=null) {
+			size++;
+			this.left.DFS();
+		}
+		
+		if(this.right!=null) {
+			size++;
+			this.right.DFS();
+		}
+		return "";
+	}
+	
 	public boolean recu_insert(int key) {
 
 		if(this.key == null) {
 			this.key = key;
-			size++;
 			return true;
 		}
+
 		if(this.key.compareTo(key)<0) {
+			if(this.right==null) {
+				this.right = new BST(key);
+			}
 			right.recu_insert(key);
-			size++;
 		}
 		else if(this.key.compareTo(key)>0) {
+			if(this.left==null) {
+				this.left = new BST(key);
+			}
 			left.recu_insert(key);
-			size++;
 		}
 		else if(this.key.compareTo(key)==0){
 			return false;
 		}
-		
 		return true;
 	}
 	public boolean iter_insert(int key) {
-		BST cNode = new BST();
+
+		if(this.key==null) {
+			this.key = key;
+			return true;
+		}
+		BST cNode = this;
+
 		while(true) {
-			if(this.key.compareTo(key)<0) {
-				
+
+			if(cNode.key.compareTo(key)<0) {
+				if(cNode.right == null) {
+					cNode.right = new BST(key);
+				}
+				cNode = cNode.right;
+				size++;
 			}
-			else if(this.key.compareTo(key)>0) {
-				
+			else if(cNode.key.compareTo(key)>0) {
+				if(cNode.left == null) {
+					cNode.left = new BST(key);
+				}
+				cNode = cNode.left;
 			}
-			else if(this.key.compareTo(key)==0) break;
+			else if(cNode.key.compareTo(key)==0) break;
 		}
 		return true;
 	}
-
+	
 	public void inorder() {
-		if(left != null)
+		if(left != null) {
 			left.inorder();
-		System.out.print(key + " ");
-		if(right != null)
+		}
+		System.out.println("Visited : "+key+ ", TreeSize : "+treesize());
+		if(right != null) {
 			right.inorder();
-
+		}
 	}
 }
