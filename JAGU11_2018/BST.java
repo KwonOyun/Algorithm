@@ -17,94 +17,111 @@ public class BST {
 	}
 
 	public BST() {
-		key = null;
-		left = null;
-		right = null;
+		this.key = null;
+		this.left = null;
+		this.right = null;
+		this.size = 0;
 	}
 
 	public BST(int key) {
 		this.key = key;
-		left = null;
-		right = null;
+		this.left = null;
+		this.right = null;
+		this.size = 1;
 
 	}
 	public int treesize() {
 		if(this.key==null) return 0;
-		size=0;
-		DFS();
-		return size+1;
+
+		return this.DFS();
 	}
-	
-	public String DFS() {
-		if(this.left!=null) {
-			size++;
-			this.left.DFS();
-		}
+
+	public int DFS() {
+		int curr=0;
 		
-		if(this.right!=null) {
-			size++;
-			this.right.DFS();
+		if(this!=null) curr++;
+		
+		if(this.left!=null) {
+			curr+=this.left.DFS();
 		}
-		return "";
+
+		if(this.right!=null) {
+			curr+=this.right.DFS();
+		}
+		return curr;
 	}
-	
+
 	public boolean recu_insert(int key) {
+
+		this.size++;
 
 		if(this.key == null) {
 			this.key = key;
 			return true;
 		}
-
-		if(this.key.compareTo(key)<0) {
-			if(this.right==null) {
-				this.right = new BST(key);
+		else {
+			if(this.key.compareTo(key)<0) {
+				if(this.right==null) {
+					this.right = new BST(key);
+				}
+				else {
+					right.recu_insert(key);
+				}
 			}
-			right.recu_insert(key);
-		}
-		else if(this.key.compareTo(key)>0) {
-			if(this.left==null) {
-				this.left = new BST(key);
+			else if(this.key.compareTo(key)>0) {
+				if(this.left==null) {
+					this.left = new BST(key);
+				}
+				else{
+					left.recu_insert(key);
+				}
 			}
-			left.recu_insert(key);
-		}
-		else if(this.key.compareTo(key)==0){
-			return false;
+			else if(this.key.compareTo(key)==0){
+				return false;
+			}
 		}
 		return true;
 	}
+
 	public boolean iter_insert(int key) {
 
-		if(this.key==null) {
-			this.key = key;
-			return true;
-		}
 		BST cNode = this;
 
+		if(cNode.key==null) {
+			cNode.key = key;
+			this.size++;
+			return true;
+		}
 		while(true) {
-
 			if(cNode.key.compareTo(key)<0) {
 				if(cNode.right == null) {
+					this.size++;
 					cNode.right = new BST(key);
 				}
-				cNode = cNode.right;
-				size++;
+				else{
+					cNode = cNode.right;
+				}
 			}
 			else if(cNode.key.compareTo(key)>0) {
 				if(cNode.left == null) {
+					this.size++;
 					cNode.left = new BST(key);
 				}
-				cNode = cNode.left;
+				else{
+					cNode = cNode.left;
+				}
 			}
-			else if(cNode.key.compareTo(key)==0) break;
+			else if(cNode.key.compareTo(key)==0) {
+				return false;
+			}
 		}
-		return true;
 	}
-	
+
 	public void inorder() {
 		if(left != null) {
 			left.inorder();
 		}
-		System.out.println("Visited : "+key+ ", TreeSize : "+treesize());
+		System.out.println("Visited : "+this.key+ ", TreeSize : "+this.treesize());
 		if(right != null) {
 			right.inorder();
 		}

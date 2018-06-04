@@ -6,7 +6,6 @@ public class TestBST {
 
    public static void main(String[] args) {
       // TODO Auto-generated method stub
-      System.out.println("========삽입=========");
       BST a = new BST();
       a.recu_insert(5);
       a.recu_insert(10);
