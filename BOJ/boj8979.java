@@ -1,11 +1,10 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class boj8979 {
 
-	public static int N;
-	public static int K;
-	public static int[] nation;
+	public static int N;  //국가 수
+	public static int K;  //등수를 알고 싶은 국가
+	public static int[][] nation;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -13,39 +12,31 @@ public class boj8979 {
 		N = sc.nextInt();
 		K = sc.nextInt();
 		int index=0;
-		int gold =0; int silver=0; int bronze=0;
-		nation = new int[N+1];
+		int gold=0; int silver=0; int bronze=0;
+		nation = new int[N+1][3];
+
 		for(int i=1; i<=N; i++) {
 			index = sc.nextInt();
 			gold = sc.nextInt();
 			silver = sc.nextInt();
 			bronze = sc.nextInt();
-			nation[index] = gold*100+silver*10+bronze;
+			nation[index][0] = gold; nation[index][1] = silver; nation[index][2] = bronze;
 		}
-		int search = nation[K];
 		int count=0;
-		Arrays.sort(nation);
-//				for(int i=1; i<=N; i++) {
-//					System.out.println(nation[i]);
-//				}
-		//		for(int i=N; i>0; i--) {
-		//			if(nation[i]/100 > nation[K]/100) count++;
-		//			else if(nation[i]/100==nation[K]/100) {
-		//				if((nation[i]%100)/10>(nation[K]%100)/10) count++;
-		//				else if((nation[i]%100)/10==(nation[K]%100)/10) {
-		//					if(((nation[i]%100)%10)/10>((nation[K]%100)%10)/10) count++;
-		//					else break;
-		//				}
-		//			}
-		//		}
-		for(int i=N; i>0; i--) {
-			if(nation[i]>search) {
-				count++;
-			}
-			else {
-				break;
+		for(int i=1; i<=N; i++) {
+			if(i==K) continue;
+			
+			if(nation[i][0]>nation[K][0]) count++;  //금메달비교
+			
+			else if(nation[i][0]==nation[K][0]){
+				if(nation[i][1]>nation[K][1]) count++;   //은메달 비교
+				
+				else if(nation[i][1]==nation[K][1]){
+					if(nation[i][2]>nation[K][2]) count++;  //동메달 비교
+				}
 			}
 		}
+
 		System.out.println(count+1);
 
 	}
