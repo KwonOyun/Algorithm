@@ -13,19 +13,19 @@ public class boj1260 {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
 		
-		N = sc.nextInt();
+		N = sc.nextInt();   //입력
 		M = sc.nextInt();
 		V = sc.nextInt();
 		
 		for(int i=1; i<=M; i++) {
 			x = sc.nextInt();
 			y = sc.nextInt();
-			graph[x][y] = graph[y][x] = 1;
+			graph[x][y] = graph[y][x] = 1;    //간선 연결
 		}
 		
 		DFS(V);
 		
-		for(int i=1; i<=N; i++) {
+		for(int i=1; i<=N; i++) {   //visited배열 reset
 			visited[i] = false;
 		}
 		
@@ -35,31 +35,31 @@ public class boj1260 {
 		sc.close();
 	}
 
-	public static void DFS(int V) {
-		System.out.print(V + " "); 
-		visited[V] = true; 
-		for(int i=1 ; i<=N ; i++) { 
-			if(graph[V][i] == 1 && visited[i] == false) { 
-				DFS(i); 
+	public static void DFS(int V) {   //DFS메소드
+		System.out.print(V + " ");   //출력
+		visited[V] = true;    //방문 표시
+		for(int i=1 ; i<=N ; i++) {  //정점의 개수만큼 반복
+			if(graph[V][i] == 1 && visited[i] == false) {  //연결되어있고 방문하지 않았으면 
+				DFS(i);  //재귀
 			} 
 		} 
 	}
 	
-	public static void BFS(int V) {
-		Queue<Integer> queue = new LinkedList<Integer>();
-		int out;
+	public static void BFS(int V) {   //BFS메소드
+		Queue<Integer> queue = new LinkedList<Integer>();  //큐 생성
+		int out;  
 		
-		queue.add(V);
-		visited[V] = true;
-		System.out.print(V+" ");
+		queue.add(V);   //정점 큐에 삽입
+		visited[V] = true;  //방문 표시
+		System.out.print(V+" ");  //출력
 		
-		while(!queue.isEmpty()) {
-			out = queue.poll();
-			for(int i=1; i<=N; i++) {
-				if(graph[out][i] == 1 && visited[i] == false) {
-					queue.add(i);
-					visited[i] = true;
-					System.out.print(i+" ");
+		while(!queue.isEmpty()) {  //큐가 비어있을 때 까지 반복
+			out = queue.poll();  //첫번째 값 큐에서 빼기
+			for(int i=1; i<=N; i++) {  //정점의 개수만큼 반복
+				if(graph[out][i] == 1 && visited[i] == false) {  //연결되어 있고 방문하지 않았으면
+					queue.add(i);   //큐에 삽입
+					visited[i] = true;  //방문 표시
+					System.out.print(i+" "); //새로 방문한 점 출력
 				}
 			}
 		}
