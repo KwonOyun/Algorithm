@@ -8,8 +8,6 @@ public class boj7576 {
 	public static int M, N;
 	public static int[][] matrix;
 	public static Queue<Point> queue;
-	public static int count;
-	public static int tomato;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -23,63 +21,44 @@ public class boj7576 {
 		for(int i=1; i<=N; i++) {
 			for(int j=1; j<=M; j++) {
 				matrix[i][j] = sc.nextInt();  //토마토 유무 입력받기
-				if(matrix[i][j]==0) continue;
-				
-				else if(matrix[i][j] == 1) {
+				if(matrix[i][j] == 1) {
 					queue.add(new Point(i,j));   //x, y좌표 큐에 추가
-					tomato++;
 				}
-				
-				else if(matrix[i][j] == -1) tomato++;
 			}
 		}
 		BFS();
-		if(tomato !=N*M) System.out.println(-1);
+		check();
 	}
 
 	public static void BFS() {
 		while(!queue.isEmpty()) {
-			if(tomato == N*M) {
-				System.out.println(count);
-				break;
-			}
-			int size = queue.size();
-			while(size-->0) {
-				Point temp = queue.poll();
-				int a = temp.x;
-				int b = temp.y;
-				if(a+1<=N) {
-					if(matrix[a+1][b]==0) {
-						matrix[a+1][b]=1;
-						tomato++;
-						queue.add(new Point(a+1,b));
-					}
-				}
-				if(a-1>=1) {
-					if(matrix[a-1][b]==0) {
-						matrix[a-1][b]=1;
-						tomato++;
-						queue.add(new Point(a-1,b));
-					}
-
-				}
-				if(b+1<=N) {
-					if(matrix[a][b+1]==0) {
-						matrix[a][b+1]=1;
-						tomato++;
-						queue.add(new Point(a,b+1));
-					}
-				}
-				if(b-1>=1) {
-					if(matrix[a][b-1]==0) {
-						matrix[a][b-1]=1;
-						tomato++;
-						queue.add(new Point(a,b-1));
+			Point temp = queue.poll();
+			for(int dx=-1; dx<=1; dx++) {
+				for(int dy=-1; dy<=1; dy++) {
+					if(Math.abs(dx)+Math.abs(dy)==1) {
+						int x = temp.x+dx;
+						int y = temp.y+dy;
+						if(x>=1 && x<=N && y>=1 && y<=M && matrix[x][y] == 0) {
+							matrix[x][y] = matrix[temp.x][temp.y]+1;
+							queue.add(new Point(x,y));
+						}
 					}
 				}
 			}
-			count++;
 		}
+	}
+	public static void check() {
+		int ans = 1;
+		for(int i=1; i<=N; i++) {
+			for(int j=1; j<=M; j++) {
+				if(matrix[i][j] == 0) {
+					System.out.println(-1);
+					return;
+				}
+				ans = Math.max(ans, matrix[i][j]);
+			}
+		}
+		System.out.println(ans-1);
 	}
 
 }
