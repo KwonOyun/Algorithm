@@ -7,9 +7,10 @@ public class boj13460 {
 
 	public static int N, M;
 	public static char[][] matrix;
-	public static Queue<Point> queue;
+	public static Queue<Point> Rqueue;
+	public static Queue<Point> Bqueue;
 	public static int count, targetX, targetY;
-	public static Point first, second;
+	public static Point Redbead, Bluebead;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -18,16 +19,20 @@ public class boj13460 {
 		M = sc.nextInt();
 
 		matrix = new char[N+1][M+1];
-		queue = new LinkedList<Point>();
+		Rqueue = new LinkedList<Point>();  //빨간구슬 큐
+		Bqueue = new LinkedList<Point>();  //파란구슬 큐
 
 		for(int i=1; i<=N; i++) {    //보드 입력
 			String temp = sc.next();
 			for(int j=1; j<=M; j++) {
 				matrix[i][j] = temp.charAt(j-1);
-				if(matrix[i][j] == 'R' || matrix[i][j] == 'B') {
-					queue.add(new Point(i,j));
+				if(matrix[i][j] == 'R') {
+					Rqueue.add(new Point(i,j));   //빨간구슬
 				}
-				else if(matrix[i][j] == 'O') {
+				else if(matrix[i][j] == 'B') {
+					Bqueue.add(new Point(i,j));  //파란구슬 
+				}
+				else if(matrix[i][j] == 'O') {  //구멍의 좌표 설정
 					targetX = i; targetY = j;
 				}
 			}
@@ -37,11 +42,11 @@ public class boj13460 {
 	}
 
 	public static void Solution() {
-		while(!queue.isEmpty()) {
-			int size = queue.size()/2;
+		while(!Rqueue.isEmpty()) {
+			int size = Rqueue.size();
 			while(size-->0) {  //왼쪽 위쪽 오른쪽 아래쪽
-				first = queue.poll();
-				second = queue.poll();
+				Redbead = Rqueue.poll();
+				Bluebead = Bqueue.poll();
 				leftmove();
 				upmove();
 				rightmove();
@@ -52,68 +57,73 @@ public class boj13460 {
 	}
 
 	public static void leftmove() {
-		if(first.x == second.x) {
-			if(targetX == first.x) {
-				if(targetY>first.y && targetY>second.y) {  //왼쪽에 몰려있을때
-					int tempY=0;
-					for(int i=first.y-1; i>=1; i--) {
-						if(matrix[first.x][i] == '#') {
-							tempY=i+1;
-							matrix[first.x][tempY] = matrix[first.x][Math.min(first.y, second.y)];
-							matrix[first.x][tempY+1] = matrix[first.x][Math.max(first.y, second.y)];
-							queue.add(new Point(first.x, tempY));
-							queue.add(new Point(first.x, tempY+1));
-							return;
-						}
+		if(Redbead.x == Bluebead.x) {  //두 개의 구슬이 같은 이동경로에 있을 경우
+			if(Redbead.y > Bluebead.y) {
+				int temp=0;
+				for(int i=Bluebead.y-1; i>=1; i--) {
+					if(matrix[Bluebead.x][i]=='#') {
+						Bqueue.add(new Point(Bluebead.x,i+1));
+						temp = i+1;
+						break;
 					}
+					else if(matrix[Bluebead.x][i]=='O') return;
 				}
-				else if(targetY>Math.min(first.y, second.y) && targetY<Math.max(first.y, second.y)) {  //중간값일때
-					if(matrix[first.x][Math.max(first.y, second.y)]=='R') {
+				for(int i=Redbead.y-1; i>=1; i--) {
+					if(matrix[Redbead.x][i]=='#' || i==temp) {
+						Rqueue.add(new Point(Redbead.x,i+1));
+						break;
+					}
+					else if(matrix[Redbead.x][i]=='O') {
 						System.out.println(count+1);
 						System.exit(0);
 					}
 				}
 			}
 			else {
-				int tempY=0;
-				for(int i=first.y-1; i>=1; i--) {
-					if(matrix[first.x][i] == '#') {
-						tempY=i+1;
-						matrix[first.x][tempY] = matrix[first.x][Math.min(first.y, second.y)];
-						matrix[first.x][tempY+1] = matrix[first.x][Math.max(first.y, second.y)];
-						queue.add(new Point(first.x, tempY));
-						queue.add(new Point(first.x, tempY+1));
+				int temp =0;
+				for(int i=Redbead.y-1; i>=1; i--) {
+					if(matrix[Redbead.x][i]=='#') {
+						Rqueue.add(new Point(Redbead.x, i+1));
+						temp = i+1;
+						break;
+
+					}
+					else if(matrix[Redbead.x][i]=='O') {
+						for(int j=Redbead.y+1; j<Bluebead.y; j++) {
+							if(matrix[Redbead.x][j]=='#') {
+								System.out.println(count+1);
+								System.exit(0);
+							}
+						}
 						return;
 					}
 				}
+				for(int i=Bluebead.y-1; i>=1; i--) {
+					if(matrix[Bluebead.x][i]=='#' || i==temp) {
+						Bqueue.add(new Point(Bluebead.x,i+1));
+						break;
+					}
+					else if(matrix[Bluebead.x][i]=='O') return;
+				}
+				
 			}
 		}
-		else {
-			for(int i=first.y-1; i>=1; i--) {  //첫번째 구슬
-				if(matrix[first.x][i] == 'O') {
-					if(matrix[first.x][first.y] == 'R') {  //R이 구멍이 들어갔을 때 -> 성공
-						System.out.println(count+1);
-						System.exit(0);
-					}
+		else {   //두 개의 구슬이 다른 이동경로에 있을 경우
+			for(int i=Redbead.y-1; i>=1; i--) {
+				if(matrix[Redbead.x][i]=='#') {
+					Rqueue.add(new Point(Redbead.x, i+1));
+					break;	
 				}
-				else if(matrix[first.x][i] == '#') {
-					matrix[first.x][i+1] = matrix[first.x][first.y];
-					queue.add(new Point(first.x, i+1));
-					break;
+				else if(matrix[Redbead.x][i] =='O') {
+					System.out.println(count+1);
+					System.exit(0);
 				}
 			}
 
-			for(int i=second.y-1; i>=1; i--) {  //두번재 구슬
-				if(matrix[second.x][i] == 'O') {
-					if(matrix[second.x][second.y] == 'R') {  //R이 구멍이 들어갔을 때 -> 성공
-						System.out.println(count+1);
-						System.exit(0);
-					}
-				}
-				else if(matrix[second.x][i] == '#') {
-					matrix[second.x][i+1] = matrix[second.x][second.y];
-					queue.add(new Point(first.x, i+1));
-					break;
+			for(int i=Bluebead.y-1; i>=1; i--) {
+				if(matrix[Bluebead.x][i]=='#') {
+					Rqueue.add(new Point(Bluebead.x, i+1));
+					break;	
 				}
 			}
 		}
