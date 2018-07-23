@@ -38,7 +38,6 @@ public class boj13460 {
 			}
 		}
 		Solution();
-		if(count>10) System.out.println(-1);
 	}
 
 	public static void Solution() {
@@ -53,11 +52,16 @@ public class boj13460 {
 				downmove();
 			}
 			count++;
+			if(count>10) {
+				System.out.println(-1);
+				System.exit(0);
+			}
 		}
 	}
 
 	public static void leftmove() {
 		if(Redbead.x == Bluebead.x) {  //두 개의 구슬이 같은 이동경로에 있을 경우
+			System.out.println(Redbead.x+" "+Bluebead.x);
 			if(Redbead.y > Bluebead.y) {
 				int temp=0;
 				for(int i=Bluebead.y-1; i>=1; i--) {
