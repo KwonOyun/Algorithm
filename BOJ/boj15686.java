@@ -15,7 +15,7 @@ public class boj15686 {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
-		result = 100000;
+		result = Integer.MAX_VALUE;
 		chicken = new ArrayList<Point>();
 		person = new ArrayList<Point>();
 		N = sc.nextInt();
